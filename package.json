@@ -1,0 +1,34 @@
+{
+  "name": "ice-dashboard",
+  "version": "1.0.0",
+  "description": "React Admin Dashboard for sales, expense, ledger record for ice factory",
+  "main": "backend/server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node backend/server.js",
+    "dev": "nodemon backend/server.js",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false && npm install --prefix frontend && npm run build --prefix frontend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoeezAhmed1609/react-dashboard.git"
+  },
+  "keywords": [
+    "React",
+    "dashboard"
+  ],
+  "author": "Moeez Ahmed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MoeezAhmed1609/react-dashboard/issues"
+  },
+  "homepage": "https://github.com/MoeezAhmed1609/react-dashboard#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.0.2",
+    "nodemon": "^2.0.21",
+    "path": "^0.12.7"
+  }
+}
