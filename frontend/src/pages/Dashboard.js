@@ -57,7 +57,7 @@ const Dashboard = () => {
   }
   const getCurrentYear = () => {
     const d = new Date()
-    return d.getFullYear()
+    return String(d.getFullYear())
   }
 
   const currentMonth = getMonthName()
@@ -98,7 +98,6 @@ const Dashboard = () => {
   let monthlySaleUnits = 0
   let monthlySalePaidAmount = 0
   let monthlySaleBalanceAmount = 0
-  let monthlyProfitLoss
 
   // yearly
   let yearlyData = []
@@ -187,7 +186,6 @@ const Dashboard = () => {
       // expenses.unshift(exp)
     }
   })
-  console.log(expensesData)
 
   // Customer Report
   let amountPaid = 0
@@ -614,316 +612,318 @@ const Dashboard = () => {
             </Grid>
           </Grid>
         </Box>
-        <Box
-          sx={{
-            width: '100%',
-            height: '350px',
-            padding: '3%',
-            marginTop: '40px',
-            marginBottom: '30px',
-          }}
-        >
-          {mode && mode === 'customer' ? (
-            <Box
-              sx={{ width: '100%', minHeight: '400px', textAlign: 'right' }}
-              ref={print}
-            >
-              <Typography variant="h6">ڈیلر کا نام : {customer}</Typography>
-              <Typography variant="h6">{month} : ماھ</Typography>
-              <TableContainer>
-                <Table
-                  sx={{ minWidth: 700, marginTop: '20px' }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        ادائیگی کی حیثیت
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        مقدار
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        شرح
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '100px' }}>
-                        تاریخ
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        نمبر
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {customerData &&
-                      customerData.map((data, index) => {
-                        return (
-                          <TableRow key={index}>
-                            <TableCell align="right">
-                              {data?.status ? 'ادا' : 'باقی'}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.item?.lineTotal}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.item?.quantity}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.item?.rate}
-                            </TableCell>
-                            <TableCell align="right">{data?.date}</TableCell>
-                            <TableCell align="right">{index + 1}</TableCell>
-                          </TableRow>
-                        )
-                      })}
-                    <br />
-                    <TableRow>
-                      <TableCell>ٹوٹل</TableCell>
-                      <TableCell align="right">{total}</TableCell>
-                      <TableCell rowSpan={3} />
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>ادا</TableCell>
-                      <TableCell align="right">{amountPaid}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell>باقی</TableCell>
-                      <TableCell align="right">{amountBalance}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          ) : mode === 'monthly' ? (
-            <Box
-              ref={print}
-              sx={{
-                width: '100%',
-                minHeight: '400px',
-                textAlign: 'right',
-              }}
-            >
-              <Typography variant="h6">{month} : ماھ</Typography>
-              <TableContainer>
-                <Table
-                  sx={{ minWidth: 700, marginTop: '20px' }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        ادائیگی کی حیثیت
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        باقی رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        ادا شدہ رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل خریداری
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '120px' }}>
-                        ڈیلر کا نام
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {monthlyData &&
-                      monthlyData.map((data, index) => {
-                        return (
-                          <TableRow key={index}>
-                            <TableCell align="right">
-                              {data?.monthlyCustomerBalanceAmount > 0
-                                ? 'باقی'
-                                : 'ادا'}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.monthlyCustomerBalanceAmount}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.monthlyCustomerPaidAmount}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.monthlyCustomerTotal}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.customer}
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TableContainer>
-                <Table
-                  sx={{ minWidth: 700, marginTop: '20px' }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        اخراجات
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        باقی رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        ادا شدہ رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل بلاک کی مقدار
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل فروخت
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="right">{monthTotalExpense}</TableCell>
-                      <TableCell align="right">
-                        {monthlySaleBalanceAmount}
-                      </TableCell>
-                      <TableCell align="right">
-                        {monthlySalePaidAmount}
-                      </TableCell>
-                      <TableCell align="right">{monthlySaleUnits}</TableCell>
-                      <TableCell align="right">{monthlySaleTotal}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          ) : mode === 'yearly' ? (
-            <Box
-              ref={print}
-              sx={{
-                width: '100%',
-                minHeight: '400px',
-                textAlign: 'right',
-              }}
-            >
-              <Typography variant="h6">{year} : سال</Typography>
-              <TableContainer>
-                <Table
-                  sx={{ minWidth: 700, marginTop: '20px' }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        ادائیگی کی حیثیت
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        باقی رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        ادا شدہ رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل خریداری
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '120px' }}>
-                        ڈیلر کا نام
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {yearlyData &&
-                      yearlyData.map((data, index) => {
-                        return (
-                          <TableRow key={index}>
-                            <TableCell align="right">
-                              {data?.yearlyCustomerBalanceAmount > 0
-                                ? 'باقی'
-                                : 'ادا'}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.yearlyCustomerBalanceAmount}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.yearlyCustomerPaidAmount}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.yearlyCustomerTotal}
-                            </TableCell>
-                            <TableCell align="right">
-                              {data?.customer}
-                            </TableCell>
-                          </TableRow>
-                        )
-                      })}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-              <TableContainer>
-                <Table
-                  sx={{ minWidth: 700, marginTop: '20px' }}
-                  aria-label="spanning table"
-                >
-                  <TableHead>
-                    <TableRow>
-                      <TableCell align="right" sx={{ width: '60px' }}>
-                        اخراجات
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        باقی رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        ادا شدہ رقم
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل بلاک کی مقدار
-                      </TableCell>
-                      <TableCell align="right" sx={{ width: '80px' }}>
-                        کل فروخت
-                      </TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="right">{yearTotalExpense}</TableCell>
-                      <TableCell align="right">
-                        {yearlySaleBalanceAmount}
-                      </TableCell>
-                      <TableCell align="right">
-                        {yearlySalePaidAmount}
-                      </TableCell>
-                      <TableCell align="right">{yearlySaleUnits}</TableCell>
-                      <TableCell align="right">{yearlySaleTotal}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Box>
-          ) : null}
-          {mode && (
-            <Box
-              sx={{
-                display: 'flex',
-                width: '100%',
-                height: '50px',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: '25px',
-                padding: '2%',
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{ width: '60%' }}
-                onClick={generatePrint}
+        {mode && (
+          <Box
+            sx={{
+              width: '100%',
+              height: '350px',
+              padding: '3%',
+              marginTop: '40px',
+              marginBottom: '30px',
+            }}
+          >
+            {mode && mode === 'customer' ? (
+              <Box
+                sx={{ width: '100%', minHeight: '400px', textAlign: 'right' }}
+                ref={print}
               >
-                پرنٹ حاصل کریں
-              </Button>
-            </Box>
-          )}
-        </Box>
+                <Typography variant="h6">ڈیلر کا نام : {customer}</Typography>
+                <Typography variant="h6">{month} : ماھ</Typography>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 700, marginTop: '20px' }}
+                    aria-label="spanning table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          ادائیگی کی حیثیت
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          مقدار
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          شرح
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '100px' }}>
+                          تاریخ
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          نمبر
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {customerData &&
+                        customerData.map((data, index) => {
+                          return (
+                            <TableRow key={index}>
+                              <TableCell align="right">
+                                {data?.status ? 'ادا' : 'باقی'}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.item?.lineTotal}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.item?.quantity}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.item?.rate}
+                              </TableCell>
+                              <TableCell align="right">{data?.date}</TableCell>
+                              <TableCell align="right">{index + 1}</TableCell>
+                            </TableRow>
+                          )
+                        })}
+                      <br />
+                      <TableRow>
+                        <TableCell>ٹوٹل</TableCell>
+                        <TableCell align="right">{total}</TableCell>
+                        <TableCell rowSpan={3} />
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>ادا</TableCell>
+                        <TableCell align="right">{amountPaid}</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>باقی</TableCell>
+                        <TableCell align="right">{amountBalance}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            ) : mode === 'monthly' ? (
+              <Box
+                ref={print}
+                sx={{
+                  width: '100%',
+                  minHeight: '400px',
+                  textAlign: 'right',
+                }}
+              >
+                <Typography variant="h6">{month} : ماھ</Typography>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 700, marginTop: '20px' }}
+                    aria-label="spanning table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          ادائیگی کی حیثیت
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          باقی رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          ادا شدہ رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل خریداری
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '120px' }}>
+                          ڈیلر کا نام
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {monthlyData &&
+                        monthlyData.map((data, index) => {
+                          return (
+                            <TableRow key={index}>
+                              <TableCell align="right">
+                                {data?.monthlyCustomerBalanceAmount > 0
+                                  ? 'باقی'
+                                  : 'ادا'}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.monthlyCustomerBalanceAmount}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.monthlyCustomerPaidAmount}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.monthlyCustomerTotal}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.customer}
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 700, marginTop: '20px' }}
+                    aria-label="spanning table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          اخراجات
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          باقی رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          ادا شدہ رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل بلاک کی مقدار
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل فروخت
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="right">{monthTotalExpense}</TableCell>
+                        <TableCell align="right">
+                          {monthlySaleBalanceAmount}
+                        </TableCell>
+                        <TableCell align="right">
+                          {monthlySalePaidAmount}
+                        </TableCell>
+                        <TableCell align="right">{monthlySaleUnits}</TableCell>
+                        <TableCell align="right">{monthlySaleTotal}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            ) : mode === 'yearly' ? (
+              <Box
+                ref={print}
+                sx={{
+                  width: '100%',
+                  minHeight: '400px',
+                  textAlign: 'right',
+                }}
+              >
+                <Typography variant="h6">{year} : سال</Typography>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 700, marginTop: '20px' }}
+                    aria-label="spanning table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          ادائیگی کی حیثیت
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          باقی رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          ادا شدہ رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل خریداری
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '120px' }}>
+                          ڈیلر کا نام
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {yearlyData &&
+                        yearlyData.map((data, index) => {
+                          return (
+                            <TableRow key={index}>
+                              <TableCell align="right">
+                                {data?.yearlyCustomerBalanceAmount > 0
+                                  ? 'باقی'
+                                  : 'ادا'}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.yearlyCustomerBalanceAmount}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.yearlyCustomerPaidAmount}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.yearlyCustomerTotal}
+                              </TableCell>
+                              <TableCell align="right">
+                                {data?.customer}
+                              </TableCell>
+                            </TableRow>
+                          )
+                        })}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                <TableContainer>
+                  <Table
+                    sx={{ minWidth: 700, marginTop: '20px' }}
+                    aria-label="spanning table"
+                  >
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="right" sx={{ width: '60px' }}>
+                          اخراجات
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          باقی رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          ادا شدہ رقم
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل بلاک کی مقدار
+                        </TableCell>
+                        <TableCell align="right" sx={{ width: '80px' }}>
+                          کل فروخت
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="right">{yearTotalExpense}</TableCell>
+                        <TableCell align="right">
+                          {yearlySaleBalanceAmount}
+                        </TableCell>
+                        <TableCell align="right">
+                          {yearlySalePaidAmount}
+                        </TableCell>
+                        <TableCell align="right">{yearlySaleUnits}</TableCell>
+                        <TableCell align="right">{yearlySaleTotal}</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Box>
+            ) : null}
+            {mode && (
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: '100%',
+                  height: '50px',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginTop: '25px',
+                  padding: '2%',
+                }}
+              >
+                <Button
+                  variant="contained"
+                  sx={{ width: '60%' }}
+                  onClick={generatePrint}
+                >
+                  پرنٹ حاصل کریں
+                </Button>
+              </Box>
+            )}
+          </Box>
+        )}
       </Box>
     </>
   )
