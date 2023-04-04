@@ -139,7 +139,7 @@ const Receipt = () => {
     existedCustomer && existedCustomer.length > 0
       ? dispatch(updateSales(receiptUpdateData))
       : dispatch(createSales(saleData))
-    // window.location.reload()
+    window.location.reload()
   }
 
   useEffect(() => {

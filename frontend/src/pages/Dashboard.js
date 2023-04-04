@@ -23,7 +23,6 @@ import {
   TableHead,
   TableRow,
   Button,
-  SliderMark,
 } from '@mui/material'
 
 // Components Import
@@ -56,11 +55,16 @@ const Dashboard = () => {
     const d = new Date()
     return monthNames[d.getMonth()]
   }
+  const getCurrentYear = () => {
+    const d = new Date()
+    return d.getFullYear()
+  }
 
   const currentMonth = getMonthName()
+  const currentYear = getCurrentYear()
 
-  const [month, setMonth] = useState('March')
-  const [year, setYear] = useState('2023')
+  const [month, setMonth] = useState(currentMonth)
+  const [year, setYear] = useState(currentYear)
   const [customer, setCustomer] = useState('')
   const [mode, setMode] = useState('')
 
