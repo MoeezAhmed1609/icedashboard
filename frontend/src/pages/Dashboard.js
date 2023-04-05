@@ -27,6 +27,7 @@ import {
 
 // Components Import
 import MetaData from '../components/MetaData'
+import ExpensesTable from '../components/ExpensesTable'
 
 // Import React To Print
 import { useReactToPrint } from 'react-to-print'
@@ -245,7 +246,7 @@ const Dashboard = () => {
 
   const generatePrint = useReactToPrint({
     content: () => print.current,
-    documentTitle: `${month}sheet`,
+    documentTitle: `dashboardPrint`,
     onAfterPrint: () => alert('Summary Printed Successfully!'),
   })
 
@@ -412,7 +413,70 @@ const Dashboard = () => {
         </Box>
         <Box sx={{ width: '100%', height: '350px', padding: '3%' }}>
           <Grid container>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={3}>
+              <Box
+                sx={{
+                  width: '100%',
+                  height: '300px',
+                  borderRight: '2px solid #1976d2',
+                  padding: '5%',
+                  textAlign: 'right',
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  gutterBottom
+                  sx={{ paddingRight: '15px' }}
+                >
+                  اخراجات کی رپورٹ پرنٹ کریں۔
+                </Typography>
+                {/* <FormControl fullWidth sx={{ marginTop: '40px' }}>
+                  <InputLabel id="demo-simple-select-label">
+                    مہینہ منتخب کریں۔
+                  </InputLabel>
+                  <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={month}
+                    label="Select Month"
+                    onChange={handleMonthChange}
+                  >
+                    <MenuItem value={'January'}>January</MenuItem>
+                    <MenuItem value={'February'}>February</MenuItem>
+                    <MenuItem value={'March'}>March</MenuItem>
+                    <MenuItem value={'April'}>April</MenuItem>
+                    <MenuItem value={'May'}>May</MenuItem>
+                    <MenuItem value={'June'}>June</MenuItem>
+                    <MenuItem value={'July'}>July</MenuItem>
+                    <MenuItem value={'August'}>August</MenuItem>
+                    <MenuItem value={'September'}>September</MenuItem>
+                    <MenuItem value={'October'}>October</MenuItem>
+                    <MenuItem value={'November'}>November</MenuItem>
+                    <MenuItem value={'December'}>December</MenuItem>
+                  </Select>
+                </FormControl> */}
+                <Box
+                  sx={{
+                    display: 'flex',
+                    width: '100%',
+                    height: '50px',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: '15px',
+                    padding: '2%',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    fullWidth
+                    onClick={() => setMode('expenses')}
+                  >
+                    حاصل کریں
+                  </Button>
+                </Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={3}>
               <Box
                 sx={{
                   height: '300px',
@@ -467,7 +531,7 @@ const Dashboard = () => {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={3}>
               <Box
                 sx={{
                   height: '300px',
@@ -529,7 +593,7 @@ const Dashboard = () => {
                 </Box>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={4}>
+            <Grid item xs={12} sm={3}>
               <Box
                 sx={{
                   width: '100%',
@@ -899,6 +963,14 @@ const Dashboard = () => {
                     </TableBody>
                   </Table>
                 </TableContainer>
+              </Box>
+            ) : mode === 'expenses' ? (
+              <Box
+                sx={{ width: '100%', minHeight: '400px', textAlign: 'right' }}
+                ref={print}
+              >
+                <Typography variant="h6">{month} : ماھ</Typography>
+                <ExpensesTable />
               </Box>
             ) : null}
             {mode && (

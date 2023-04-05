@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 // CSS Import
 import '../index.css'
@@ -33,6 +33,9 @@ import {
 // Components Import
 import ReceiptTable from '../components/ReceiptTable'
 import MetaData from '../components/MetaData'
+
+// Import React To Print
+import { useReactToPrint } from 'react-to-print'
 
 const Receipt = () => {
   const dispatch = useDispatch()
@@ -93,6 +96,16 @@ const Receipt = () => {
       }
     })
 
+  // Print Summary
+
+  const print = useRef()
+
+  const generatePrint = useReactToPrint({
+    content: () => print.current,
+    documentTitle: 'dashboardPrint',
+    onAfterPrint: () => alert('Receipt Printed Successfully!'),
+  })
+
   // Receipt submit
   const handleReceiptSubmit = () => {
     // first check if the customer exists
@@ -136,10 +149,15 @@ const Receipt = () => {
     }
 
     // if exists then just update customer data
-    existedCustomer && existedCustomer.length > 0
-      ? dispatch(updateSales(receiptUpdateData))
-      : dispatch(createSales(saleData))
-    window.location.reload()
+
+    new Promise((resolve, reject) => {
+      resolve(
+        existedCustomer && existedCustomer.length > 0
+          ? dispatch(updateSales(receiptUpdateData))
+          : dispatch(createSales(saleData)),
+        generatePrint(),
+      )
+    }).then(() => window.location.reload())
   }
 
   useEffect(() => {
@@ -418,6 +436,8 @@ const Receipt = () => {
                   <ReceiptTable
                     items={items}
                     handleRemoveReceiptItem={handleRemoveReceiptItem}
+                    height={'300px'}
+                    remove={true}
                   />
                 </Grid>
               </Grid>
@@ -540,37 +560,73 @@ const Receipt = () => {
                 </Alert>
               </Grid>
             ) : null}
-            <Grid
-              item
-              xs={12}
-              sx={{
-                display: 'flex',
-                justifyContent: 'center',
-                height: '100px',
-                alignItems: 'center',
-              }}
-            >
-              <Button
-                variant="contained"
-                sx={{ width: '330px' }}
-                onClick={handleReceiptSubmit}
-                disabled={
-                  !selectedDate ||
-                  !customer ||
-                  !phone ||
-                  !address ||
-                  !driverName ||
-                  !driverVehicleNumber ||
-                  !items ||
-                  !status ||
-                  !amountPaid ||
-                  unpaidReceipts.length > 3
-                }
-              >
-                رسید بنائیں اور پرنٹ کریں۔
-              </Button>
-            </Grid>
           </Grid>
+        </Box>
+      </Box>
+      <Box
+        sx={{
+          padding: '10px 0 80px 65px',
+          minHeight: '50vh',
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Box
+          ref={print}
+          sx={{
+            width: '100%',
+            height: '100%',
+            display: 'flex',
+            alignItems: 'flex-end',
+            flexDirection: 'column',
+            padding: '0 60px',
+          }}
+        >
+          <Typography variant="subtitle1">تاریخ : {selectedDate}</Typography>
+          <Typography variant="subtitle1">گاہک کا نام : {customer}</Typography>
+          <Typography variant="subtitle1">فون : {phone}</Typography>
+          <Typography variant="subtitle1">پتہ : {address}</Typography>
+          <Box sx={{ width: '100%', margin: '50px 0' }}>
+            <ReceiptTable
+              items={items}
+              handleRemoveReceiptItem={handleRemoveReceiptItem}
+              height={'auto'}
+              remove={false}
+            />
+          </Box>
+          <Typography variant="subtitle1">کل رقم : {total}</Typography>
+          <Typography variant="subtitle1">
+            ادا شدہ رقم : {amountPaid}
+          </Typography>
+          <Typography variant="subtitle1">
+            باقی رقم: {total - amountPaid}
+          </Typography>
+          <Typography variant="subtitle1">
+            ادائیگی کی حیثیت : {status === 'Paid' ? 'ادا' : 'باقی'}
+          </Typography>
+        </Box>
+        <Box sx={{ marginTop: '30px' }}>
+          <Button
+            variant="contained"
+            sx={{ width: '330px' }}
+            onClick={handleReceiptSubmit}
+            disabled={
+              !selectedDate ||
+              !customer ||
+              !phone ||
+              !address ||
+              !driverName ||
+              !driverVehicleNumber ||
+              !items ||
+              !status ||
+              !amountPaid ||
+              unpaidReceipts.length > 3
+            }
+          >
+            رسید بنائیں اور پرنٹ کریں۔
+          </Button>
         </Box>
       </Box>
     </>

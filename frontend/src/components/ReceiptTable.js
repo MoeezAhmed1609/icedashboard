@@ -8,12 +8,16 @@ import TableRow from '@mui/material/TableRow'
 import { Tooltip, IconButton, Box, Typography } from '@mui/material'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff'
 
-export default function ReceiptTable({ items, handleRemoveReceiptItem }) {
+export default function ReceiptTable({
+  items,
+  handleRemoveReceiptItem,
+  height,
+  remove,
+}) {
   return (
     <TableContainer
       sx={{
-        overflowY: 'scroll',
-        height: '320px',
+        minHeight: { height },
         width: '100%',
       }}
     >
@@ -23,8 +27,12 @@ export default function ReceiptTable({ items, handleRemoveReceiptItem }) {
             <TableCell align="right">لائن ٹوٹل</TableCell>
             <TableCell align="right">مقدار</TableCell>
             <TableCell align="right">شرح</TableCell>
-            <TableCell align="right" sx={{width: '400px'}}>تفصیل</TableCell>
-            <TableCell sx={{ width: '50px' }}></TableCell>
+            <TableCell align="right" sx={{ width: '400px' }}>
+              تفصیل
+            </TableCell>
+            {remove === true ? (
+              <TableCell sx={{ width: '50px' }}></TableCell>
+            ) : null}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -42,16 +50,18 @@ export default function ReceiptTable({ items, handleRemoveReceiptItem }) {
                 <TableCell component="th" scope="row" align="right">
                   {item?.description}
                 </TableCell>
-                <TableCell sx={{ width: '50px' }}>
-                  <Tooltip title="Remove">
-                    <IconButton
-                      aria-label="remove"
-                      onClick={() => handleRemoveReceiptItem(item.id)}
-                    >
-                      <HighlightOffIcon color="error" />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
+                {remove === true ? (
+                  <TableCell sx={{ width: '50px' }}>
+                    <Tooltip title="Remove">
+                      <IconButton
+                        aria-label="remove"
+                        onClick={() => handleRemoveReceiptItem(item.id)}
+                      >
+                        <HighlightOffIcon color="error" />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                ) : null}
               </TableRow>
             ))
           ) : (
